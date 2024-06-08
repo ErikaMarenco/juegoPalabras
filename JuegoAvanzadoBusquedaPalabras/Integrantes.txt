@@ -1,0 +1,178 @@
+Grupo 5 
+Integrantes:
+
+Ulises Ismael Quintanilla Gonzalez :Codigo U20200237
+
+Héctor Manuel Lara Sánchez Codigo: U20220358
+
+Erika Nohemy Marenco Henríquez Codigo:U20230640
+
+https://github.com/ErikaMarenco/juegoPalabras.git
+
+
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Media;
+using System.Windows.Forms;
+
+namespace JuegoAvanzadoBusquedaPalabras
+{
+    public partial class Form1 : Form
+    {
+        private List<string> words = new List<string> { "PALABRA", "BUSCAR", "JUEGO" };
+        private char[,] grid = {
+            { 'P', 'A', 'L', 'A', 'B', 'R' },
+            { 'X', 'X', 'U', 'X', 'X', 'X' },
+            { 'X', 'X', 'E', 'X', 'X', 'X' },
+            { 'X', 'X', 'R', 'X', 'X', 'X' },
+            { 'X', 'X', 'C', 'X', 'X', 'X' },
+            { 'X', 'X', 'A', 'X', 'X', 'X' },
+        };
+
+        private SoundPlayer correctSound;
+        private SoundPlayer wrongSound;
+
+        public Form1()
+        {
+            InitializeComponent();
+            InitializeGame();
+
+            correctSound = new SoundPlayer("correct.wav");
+            wrongSound = new SoundPlayer("wrong.wav");
+        }
+
+        private void InitializeGame()
+        {
+            dataGridView1.RowCount = grid.GetLength(0);
+            dataGridView1.ColumnCount = grid.GetLength(1);
+
+            for (int i = 0; i < grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < grid.GetLength(1); j++)
+                {
+                    dataGridView1[j, i].Value = grid[i, j];
+                }
+            }
+
+            foreach (var word in words)
+            {
+                listBox1.Items.Add(word);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string input = textBox1.Text.ToUpper();
+            if (words.Contains(input))
+            {
+                correctSound.Play();
+                MessageBox.Show($"¡Correcto! {input} está en la cuadrícula.");
+            }
+            else
+            {
+                wrongSound.Play();
+                MessageBox.Show($"{input} no está en la lista de palabras.");
+            }
+        }
+    }
+}
+namespace JuegoAvanzadoBusquedaPalabras
+{
+    partial class Form1
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 25;
+            this.dataGridView1.Size = new System.Drawing.Size(360, 360);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 15;
+            this.listBox1.Location = new System.Drawing.Point(378, 12);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(120, 319);
+            this.listBox1.TabIndex = 1;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(378, 380);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(120, 35);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Comprobar Palabra";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(378, 337);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(120, 23);
+            this.textBox1.TabIndex = 3;
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(510, 434);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.dataGridView1);
+            this.Name = "Form1";
+            this.Text = "Juego Avanzado de Búsqueda de Palabras";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox1;
+    }
+}
+using System;
+using System.Windows.Forms;
+
+namespace JuegoAvanzadoBusquedaPalabras
+{
+    static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
+        }
+    }
+}
